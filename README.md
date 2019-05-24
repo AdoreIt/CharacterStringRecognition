@@ -1,0 +1,2 @@
+# CharacterStringRecognition
+With dynamic programming
