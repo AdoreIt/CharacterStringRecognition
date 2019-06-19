@@ -18,7 +18,7 @@ def draw_letters(letters_string):
 
     for letter in letters_string:
         if letter not in letter_imgs:
-            print(letter)
+            #print(letter)
             size = cv2.getTextSize(letter, font, font_scale, thickness)
 
             text_width = size[0][0]
@@ -28,7 +28,7 @@ def draw_letters(letters_string):
                                 np.uint8)
             char_img.fill(255)
 
-            print("shape {0}:{1}".format(char_img.shape[1], char_img.shape[0]))
+            #print("shape {0}:{1}".format(char_img.shape[1], char_img.shape[0]))
 
             textY = text_height
             textX = 0
@@ -61,10 +61,10 @@ def concatenate_images(letters_string, images_dict):
 
 def generate_image(alphabet, length):
     generated_string = generate_string(alphabet, 5)
-    print(generated_string)
+    #print(generated_string)
     letters_dict = draw_letters(generated_string)
     image = concatenate_images(generated_string, letters_dict)
-    return image
+    return generated_string, letters_dict, image
 
 
 def noise_image(image, mean=0, sigma=0):
