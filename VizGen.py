@@ -10,7 +10,6 @@ def generate_string(alphabet, length):
 def draw_letters(letters_string):
     font = cv2.FONT_HERSHEY_COMPLEX
     font_scale = 1
-    margin = 1
     thickness = 2
     color = (0, 0, 0)
 
@@ -24,7 +23,7 @@ def draw_letters(letters_string):
             text_width = size[0][0]
             text_height = size[0][1]
 
-            char_img = np.zeros((text_height + margin, text_width + margin, 3),
+            char_img = np.zeros((text_height, text_width, 3),
                                 np.uint8)
             char_img.fill(255)
 
@@ -36,7 +35,7 @@ def draw_letters(letters_string):
             cv2.putText(char_img, letter, (textX, textY), font, font_scale,
                         color, thickness)
 
-            show_image(char_img)
+            #show_image(char_img)
             letter_imgs[letter] = char_img
 
     return letter_imgs
@@ -92,5 +91,6 @@ def show_image(image, window_name=""):
 
     plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     plt.axis("off")
+
     plt.show()
     plt.close()
