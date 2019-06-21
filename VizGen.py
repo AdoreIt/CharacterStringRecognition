@@ -7,24 +7,23 @@ def generate_string(alphabet, length):
     return ''.join(np.random.choice(alphabet, length))
 
 
-def draw_letters(letters_string):
+def draw_characters(characters_string):
     font = cv2.FONT_HERSHEY_COMPLEX
     font_scale = 1
     thickness = 2
     color = (0, 0, 0)
 
-    letter_imgs = {}
+    character_imgs = {}
 
-    for letter in letters_string:
-        if letter not in letter_imgs:
-            #print(letter)
-            size = cv2.getTextSize(letter, font, font_scale, thickness)
+    for character in characters_string:
+        if character not in character_imgs:
+            #print(character)
+            size = cv2.getTextSize(character, font, font_scale, thickness)
 
             text_width = size[0][0]
             text_height = size[0][1]
 
-            char_img = np.zeros((text_height, text_width, 3),
-                                np.uint8)
+            char_img = np.zeros((text_height, text_width, 3), np.uint8)
             char_img.fill(255)
 
             #print("shape {0}:{1}".format(char_img.shape[1], char_img.shape[0]))
@@ -32,17 +31,17 @@ def draw_letters(letters_string):
             textY = text_height
             textX = 0
 
-            cv2.putText(char_img, letter, (textX, textY), font, font_scale,
+            cv2.putText(char_img, character, (textX, textY), font, font_scale,
                         color, thickness)
 
             #show_image(char_img)
-            letter_imgs[letter] = char_img
+            character_imgs[character] = char_img
 
-    return letter_imgs
+    return character_imgs
 
 
-def concatenate_images(letters_string, images_dict):
-    images = [images_dict[letter] for letter in letters_string]
+def concatenate_images(characters_string, images_dict):
+    images = [images_dict[character] for character in characters_string]
 
     height = max(image.shape[0] for image in images)
     width = sum(image.shape[1] for image in images)
@@ -61,9 +60,9 @@ def concatenate_images(letters_string, images_dict):
 def generate_image(alphabet, length):
     generated_string = generate_string(alphabet, 5)
     #print(generated_string)
-    letters_dict = draw_letters(generated_string)
-    image = concatenate_images(generated_string, letters_dict)
-    return generated_string, letters_dict, image
+    characters_dict = draw_characters(generated_string)
+    image = concatenate_images(generated_string, characters_dict)
+    return generated_string, characters_dict, image
 
 
 def noise_image(image, mean=0, sigma=0):
