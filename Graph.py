@@ -40,11 +40,13 @@ class Graph:
         c_w_d = characters_width_dict
 
         for char in c_w_d:
-            tail_column_index = column.index + c_w_d[char] - 1
+            head_column_index = column.index + c_w_d[char] - 1
 
-            if (tail_column_index < len(self.columns)):
-                edge = Edge({column.index: vertice.label},
-                            head={tail_column_index: char})
+            if (head_column_index < len(self.columns)):
+                tail = EdgeTailHead(vertice.label, column.index)
+                head = EdgeTailHead(char, head_column_index)
+
+                edge = Edge(tail=tail, head=head)
                 vertice.add_edge(edge)
 
     def print_graph(self):
@@ -58,11 +60,10 @@ class Column:
         self.index = column_index
 
     def print_column(self, index=None):
-
-        print("┌──── COLUMN {} ───┐".format(index))
+        print("┌─────── COLUMN {} ──────┐".format(index))
         for vertice in self.vertices:
             vertice.print_vertice()
-        print("└──────────────────┘")
+        print("└────────────────────────┘")
 
 
 class Vertice:
@@ -80,16 +81,20 @@ class Vertice:
         self.previous = previous
 
     def print_vertice(self):
-        print("│ ┌───── {} ──────┐ │".format(self.label))
+        if (self.label == "start"):
+            print("│ ┌────── {} ───────┐ │".format(self.label))
+        else:
+            print("│ ┌──────── {} ─────────┐ │".format(self.label))
+
         print("│ │w: {0}".format(self.weight) +
-              str("|").rjust(12 - len(str(self.weight))) + " |")
+              str("|").rjust(18 - len(str(self.weight))) + " |")
         #print("│ w│ {:>11}".format(self.weight, "|"))
-        print("│ ├──────────────┤ │")
+        print("│ ├────────────────────┤ │")
 
         for edge in self.edges:
             edge.print_edge()
 
-        print("│ └──────────────┘ │")
+        print("│ └────────────────────┘ │")
 
 
 class Edge:
@@ -102,5 +107,12 @@ class Edge:
         self.head = head
 
     def print_edge(self):
-        print("│ ├──> {0} : {1}".format(self.head, self.weight) +
+        print("│ ├──> {0} in {1} : {2}".format(
+            self.head.label, self.head.column_index, self.weight) +
               str("|").rjust(7 - len(str(self.weight))) + " |")
+
+
+class EdgeTailHead:
+    def __init__(self, label, column_index):
+        self.label = label
+        self.column_index = column_index
