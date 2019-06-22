@@ -98,6 +98,54 @@ def noise_image(image, mean=0, sigma=0):
     return noisy_image
 
 
+def show_triple_images(image_left,
+                       image_right,
+                       image_low,
+                       im_left_title="",
+                       im_right_title="",
+                       im_low_title="",
+                       window_name=""):
+
+    fig = plt.figure(0)
+
+    fig.add_subplot(1, 2, 1)
+    plt.title(im_left_title)
+    plt.imshow(cv2.cvtColor(image_left, cv2.COLOR_BGR2RGB))
+    plt.axis("off")
+
+    fig.add_subplot(1, 2, 2)
+    plt.title(im_right_title)
+    plt.imshow(cv2.cvtColor(image_right, cv2.COLOR_BGR2RGB))
+    plt.axis("off")
+
+    fig.add_subplot(3, 1, 3)
+    plt.title(im_low_title)
+    plt.imshow(cv2.cvtColor(image_low, cv2.COLOR_BGR2RGB))
+    plt.axis("off")
+
+    plt.show()
+
+
+def show_pair_images(image_left,
+                     image_right,
+                     im_left_title="",
+                     im_right_title="",
+                     window_name=""):
+    fig = plt.figure(0)
+
+    fig.add_subplot(1, 2, 1)
+    plt.title(im_left_title)
+    plt.imshow(cv2.cvtColor(image_left, cv2.COLOR_BGR2RGB))
+    plt.axis("off")
+
+    fig.add_subplot(1, 2, 2)
+    plt.title(im_right_title)
+    plt.imshow(cv2.cvtColor(image_right, cv2.COLOR_BGR2RGB))
+    plt.axis("off")
+
+    plt.show()
+
+
 def show_image(image, window_name=""):
     fig = plt.figure(0)
     fig.canvas.set_window_title(window_name)

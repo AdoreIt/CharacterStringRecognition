@@ -1,18 +1,20 @@
-from VizGen import generate_image, show_image, noise_image
+from VizGen import *
 from Recognizer import Recognizer
 
 if __name__ == "__main__":
-    alphabet = ['A', 'B']
+    alphabet = ['A']
 
-    generated_string, characters_dict, image = generate_image(alphabet, 2)
+    generated_string, characters_dict, original_image = generate_image(
+        alphabet, 3)
+    noised_image = noise_image(original_image, sigma=500)
 
-    show_image(image, "generated image")
+    recognizer = Recognizer(original_image, noised_image, alphabet,
+                            characters_dict)
 
-    noised_image = noise_image(image, sigma=100)
-    show_image(noised_image, "noised image")
+    recognized_string = recognizer.recognize()
+    recognized_image = concatenate_images(recognized_string, characters_dict)
 
-    recognizer = Recognizer(image, noised_image, alphabet, characters_dict)
-    recognizer.update_edges()
-    recognizer.graph.print_graph()
+    show_triple_images(original_image, noised_image, recognized_image,
+                       "original image", "noised image", "recognized image")
 
     # show_image(noise_image(image, 0, 20), "noised image")

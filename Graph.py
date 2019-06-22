@@ -59,6 +59,11 @@ class Column:
         self.vertices = vertices
         self.index = column_index
 
+    def get_vertice_by_label(self, vertice_label):
+        for vertice in self.vertices:
+            if (vertice.label == vertice_label):
+                return vertice
+
     def print_column(self, index=None):
         print("┌─────── COLUMN {} ──────┐".format(index))
         for vertice in self.vertices:
@@ -67,18 +72,23 @@ class Column:
 
 
 class Vertice:
-    def __init__(self, label=None, edges=[], weight=0, previous=None):
+    def __init__(self, label=None, edges=[], weight=0, best_edge=None):
         self.label = label
         self.weight = weight
-        self.previous = previous
+        self.best_edge = best_edge
         self.edges = list(edges)
+
+    def get_edge_by_head_label(self, edge_head_label):
+        for edge in self.edges:
+            if edge.head.label == edge_head_label:
+                return edge
 
     def add_edge(self, edge):
         self.edges.append(edge)
 
-    def update(self, weight, previous=None):
+    def update(self, weight, best_edge=None):
         self.weight = weight
-        self.previous = previous
+        self.best_edge = best_edge
 
     def print_vertice(self):
         if (self.label == "start"):
@@ -88,6 +98,12 @@ class Vertice:
 
         print("│ │w: {0}".format(self.weight) +
               str("|").rjust(18 - len(str(self.weight))) + " |")
+        if (self.best_edge is not None):
+            print("│ │best_edge: {0} in {1}".format(
+                self.best_edge.head.label, self.best_edge.head.column_index) +
+                  str("|").rjust(8 -
+                                 len(str(self.best_edge.head.column_index))) +
+                  " |")
         #print("│ w│ {:>11}".format(self.weight, "|"))
         print("│ ├────────────────────┤ │")
 
