@@ -29,23 +29,14 @@ class Graph:
         c_w_d = characters_width_dict
 
         for column in self.columns:
-            tail_column_index = 0
             for vertice in column.vertices:
-                print(vertice)
                 for char in c_w_d:
-                    print(char)
-                    print(vertice)
                     tail_column_index = column.index + c_w_d[char] - 1
-                    print(tail_column_index)
-                    print(len(self.columns))
-                    print(tail_column_index < len(self.columns))
+
                     if (tail_column_index < len(self.columns)):
                         edge = Edge({column.index: vertice.label},
                                     head={tail_column_index: char})
-                        print("if: ", vertice)
                         vertice.add_edge(edge)
-
-            self.print_graph()
 
     def print_graph(self):
         for i, column in enumerate(self.columns):
@@ -70,7 +61,7 @@ class Vertice:
         self.label = label
         self.weight = weight
         self.previous = previous
-        self.edges = edges
+        self.edges = list(edges)
 
     def add_edge(self, edge):
         self.edges.append(edge)
