@@ -12,6 +12,8 @@ class Recognizer:
         self.im_height = noised_image.shape[0]
         self.characters_dict = characters_dict
 
+        print(self.im_width)
+
         self.graph = Graph(image_reference.shape[1], alphabet, characters_dict)
 
         #self.graph.print_graph()
@@ -52,8 +54,7 @@ class Recognizer:
 
     def answer(self):
         columns = self.graph.columns
-        for column_index in reversed(range(1, len(self.graph.columns))):
-            print(column_index)
+        for column_index in reversed(range(1, len(self.graph.columns) + 1)):
             for vertice in columns[column_index - 1].vertices:
                 edges_head_vertices_sum = {}  # {edge.head.label: sum}
 
@@ -63,9 +64,19 @@ class Recognizer:
                         edge_head_vertice_weight = edge_head_column.get_vertice_by_label(
                             edge.head.label).weight
 
-                        edge_head_vertice_sum = edge.weight + edge_head_vertice_weight
+                        print("column_index {}".format(column_index - 1))
+                        print('vertice {}'.format(vertice.label))
+                        print('edge_head_column {}'.format(
+                            edge_head_column.index))
+                        print('edge.head.label {}'.format(edge.head.label))
+                        print('edge_head_vertice_weight {}'.format(
+                            edge_head_vertice_weight))
+
+                        edge_head_vertice_sum = edge_head_vertice_weight + edge.weight
                         edges_head_vertices_sum[
                             edge.head.label] = edge_head_vertice_sum
+
+                        print(edges_head_vertices_sum)
 
                     min_head_vertice_label = min(
                         edges_head_vertices_sum,
@@ -102,10 +113,10 @@ class Recognizer:
         im_col = image_start_column_index
         sum = 0
 
-        for column in range(char_width - 1):
+        for column in range(char_width):
             #print("char_width: {}".format(range(char_width)))
 
-            for pixel in range(0, self.im_height - 1):
+            for pixel in range(self.im_height):
                 # print("im_height: {}".format(range(im_height)))
                 # print("column: {}, pixel: {}".format(column, pixel))
                 # print("im_column: {}".format(im_col))

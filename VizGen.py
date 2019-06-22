@@ -111,17 +111,17 @@ def show_triple_images(image_left,
     fig.add_subplot(1, 2, 1)
     plt.title(im_left_title)
     plt.imshow(cv2.cvtColor(image_left, cv2.COLOR_BGR2RGB))
-    plt.axis("off")
+    #plt.axis("off")
 
     fig.add_subplot(1, 2, 2)
     plt.title(im_right_title)
     plt.imshow(cv2.cvtColor(image_right, cv2.COLOR_BGR2RGB))
-    plt.axis("off")
+    #plt.axis("off")
 
     fig.add_subplot(3, 1, 3)
     plt.title(im_low_title)
     plt.imshow(cv2.cvtColor(image_low, cv2.COLOR_BGR2RGB))
-    plt.axis("off")
+    #plt.axis("off")
 
     plt.show()
 

@@ -2,11 +2,11 @@ from VizGen import *
 from Recognizer import Recognizer
 
 if __name__ == "__main__":
-    alphabet = ['A']
+    alphabet = ['A', 'B', 'C']
 
     generated_string, characters_dict, original_image = generate_image(
-        alphabet, 3)
-    noised_image = noise_image(original_image, sigma=500)
+        alphabet, 2)
+    noised_image = noise_image(original_image, sigma=200)
 
     recognizer = Recognizer(original_image, noised_image, alphabet,
                             characters_dict)
