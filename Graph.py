@@ -7,22 +7,24 @@ class Graph:
                  columns_number,
                  alphabet,
                  characters_dict,
+                 columns=[],
                  vertices=[],
                  edges=[]):
-        """ 
+        """
         - columns_number: image.width
         """
-        # self.columns.append(Column(vertices=[Vertice(label="start",
-        #                             edges=[
-        #                                 Edge(tail="start", head=character)
-        #                                 for character in alphabet
-        #                             ])]))
-        self.columns = [
-            Column([Vertice(label=label) for label in alphabet], i)
-            for i in range(columns_number)
-        ]
-        self.edges = edges
+        self.columns = columns
+        # self.edges = edges
+        self.initialize_columns(alphabet, columns_number)
         self.initialize(characters_dict)
+
+    def initialize_columns(self, alphabet, columns_number):
+        column = Column(vertices=[Vertice(label="start")], column_index=0)
+        self.columns.append(column)
+        for i in range(1, columns_number):
+            self.columns.append(
+                Column([Vertice(label=character) for character in alphabet],
+                       column_index=i))
 
     def initialize(self, characters_dict):
         characters_width_dict = get_characters_width_dict(characters_dict)
@@ -30,13 +32,20 @@ class Graph:
 
         for column in self.columns:
             for vertice in column.vertices:
-                for char in c_w_d:
-                    tail_column_index = column.index + c_w_d[char] - 1
+                self.add_edges_to_vertice_in_column(column, vertice,
+                                                    characters_width_dict)
 
-                    if (tail_column_index < len(self.columns)):
-                        edge = Edge({column.index: vertice.label},
-                                    head={tail_column_index: char})
-                        vertice.add_edge(edge)
+    def add_edges_to_vertice_in_column(self, column, vertice,
+                                       characters_width_dict):
+        c_w_d = characters_width_dict
+
+        for char in c_w_d:
+            tail_column_index = column.index + c_w_d[char] - 1
+
+            if (tail_column_index < len(self.columns)):
+                edge = Edge({column.index: vertice.label},
+                            head={tail_column_index: char})
+                vertice.add_edge(edge)
 
     def print_graph(self):
         for i, column in enumerate(self.columns):

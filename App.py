@@ -2,9 +2,9 @@ from VizGen import generate_image
 from Recognizer import Recognizer
 
 if __name__ == "__main__":
-    alphabet = ['A']
+    alphabet = ['A', 'B', 'C']
 
-    generated_string, characters_dict, image = generate_image(alphabet, 1)
+    generated_string, characters_dict, image = generate_image(alphabet, 2)
 
     #show_image(image, "generated image")
 
