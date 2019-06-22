@@ -1,27 +1,51 @@
 import numpy as np
+from VizGen import get_characters_width_dict
 
 
 class Graph:
-    def __init__(self, columns_number, alphabet, vertices=[], edges=[]):
+    def __init__(self,
+                 columns_number,
+                 alphabet,
+                 characters_dict,
+                 vertices=[],
+                 edges=[]):
         """ 
         - columns_number: image.width
         """
-        self.vertices = [
-            Vertice(label=label,
-                    edges=[
-                        Edge(tail=label, head=character)
-                        for character in alphabet
-                    ]) for label in alphabet
+        # self.columns.append(Column(vertices=[Vertice(label="start",
+        #                             edges=[
+        #                                 Edge(tail="start", head=character)
+        #                                 for character in alphabet
+        #                             ])]))
+        self.columns = [
+            Column([Vertice(label=label) for label in alphabet], i)
+            for i in range(columns_number)
         ]
-        self.columns = [Column(self.vertices) for _ in range(columns_number)]
         self.edges = edges
-        self.initialize()
+        self.initialize(characters_dict)
 
-    def initialize(self):
-        """ Initialization """
+    def initialize(self, characters_dict):
+        characters_width_dict = get_characters_width_dict(characters_dict)
+        c_w_d = characters_width_dict
 
-    def add_column(self):
-        """ Adding column """
+        for column in self.columns:
+            tail_column_index = 0
+            for vertice in column.vertices:
+                print(vertice)
+                for char in c_w_d:
+                    print(char)
+                    print(vertice)
+                    tail_column_index = column.index + c_w_d[char] - 1
+                    print(tail_column_index)
+                    print(len(self.columns))
+                    print(tail_column_index < len(self.columns))
+                    if (tail_column_index < len(self.columns)):
+                        edge = Edge({column.index: vertice.label},
+                                    head={tail_column_index: char})
+                        print("if: ", vertice)
+                        vertice.add_edge(edge)
+
+            self.print_graph()
 
     def print_graph(self):
         for i, column in enumerate(self.columns):
@@ -29,12 +53,13 @@ class Graph:
 
 
 class Column:
-    def __init__(self, vertices):
+    def __init__(self, vertices, column_index=0):
         self.vertices = vertices
+        self.index = column_index
 
     def print_column(self, index=None):
 
-        print("┌──── COLUMN {} ────┐".format(index))
+        print("┌──── COLUMN {} ───┐".format(index))
         for vertice in self.vertices:
             vertice.print_vertice()
         print("└──────────────────┘")
@@ -46,6 +71,9 @@ class Vertice:
         self.weight = weight
         self.previous = previous
         self.edges = edges
+
+    def add_edge(self, edge):
+        self.edges.append(edge)
 
     def update(self, weight, previous=None):
         self.weight = weight

@@ -7,7 +7,7 @@ def generate_string(alphabet, length):
     return ''.join(np.random.choice(alphabet, length))
 
 
-def draw_characters(characters_string):
+def draw_characters(alphabet):
     font = cv2.FONT_HERSHEY_COMPLEX
     font_scale = 1
     thickness = 2
@@ -15,7 +15,7 @@ def draw_characters(characters_string):
 
     character_imgs = {}
 
-    for character in characters_string:
+    for character in alphabet:
         if character not in character_imgs:
             #print(character)
             size = cv2.getTextSize(character, font, font_scale, thickness)
@@ -40,6 +40,19 @@ def draw_characters(characters_string):
     return character_imgs
 
 
+def get_characters_width_dict(characters_dict):
+    characters_width_dict = {}
+
+    for character in characters_dict:
+        characters_width_dict[character] = characters_dict[character].shape[1]
+
+    return characters_width_dict
+
+
+def get_character_width(character_image):
+    return character_image.shape[1]
+
+
 def concatenate_images(characters_string, images_dict):
     images = [images_dict[character] for character in characters_string]
 
@@ -58,9 +71,10 @@ def concatenate_images(characters_string, images_dict):
 
 
 def generate_image(alphabet, length):
-    generated_string = generate_string(alphabet, 5)
+    generated_string = generate_string(alphabet, length)
     #print(generated_string)
-    characters_dict = draw_characters(generated_string)
+    characters_dict = draw_characters(alphabet)
+
     image = concatenate_images(generated_string, characters_dict)
     return generated_string, characters_dict, image
 
