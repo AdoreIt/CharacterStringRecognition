@@ -21,7 +21,7 @@ class Graph:
     def initialize_columns(self, alphabet, columns_number):
         column = Column(vertices=[Vertice(label="start")], column_index=0)
         self.columns.append(column)
-        for i in range(1, columns_number):
+        for i in range(1, columns_number + 1):
             self.columns.append(
                 Column([Vertice(label=character) for character in alphabet],
                        column_index=i))

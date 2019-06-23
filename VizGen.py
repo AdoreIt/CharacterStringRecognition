@@ -34,8 +34,10 @@ def draw_characters(alphabet):
             cv2.putText(char_img, character, (textX, textY), font, font_scale,
                         color, thickness)
 
+            crop_img = char_img[0:text_height, 2:text_width - 3]
+
             #show_image(char_img)
-            character_imgs[character] = char_img
+            character_imgs[character] = crop_img
 
     return character_imgs
 
@@ -84,7 +86,7 @@ def noise_image(image, mean=0, sigma=0):
 
     gaussian = np.random.normal(mean, sigma, (im_height, im_width))
 
-    noisy_image = np.zeros(image.shape, np.float32)
+    noisy_image = np.ones(image.shape, np.float32)
 
     if channels == 2:
         noisy_image = image + gaussian
@@ -118,7 +120,7 @@ def show_triple_images(image_left,
     plt.imshow(cv2.cvtColor(image_right, cv2.COLOR_BGR2RGB))
     #plt.axis("off")
 
-    fig.add_subplot(3, 1, 3)
+    fig.add_subplot(4, 1, 4)
     plt.title(im_low_title)
     plt.imshow(cv2.cvtColor(image_low, cv2.COLOR_BGR2RGB))
     #plt.axis("off")

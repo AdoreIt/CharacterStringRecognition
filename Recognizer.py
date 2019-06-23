@@ -46,11 +46,13 @@ class Recognizer:
         return recognized_string
 
     def get_next_best_edge(self, current_best_edge_head):
-        best_column = self.graph.columns[current_best_edge_head.column_index]
-        best_vertice_in_column = best_column.get_vertice_by_label(
-            current_best_edge_head.label)
-        next_best_edge = best_vertice_in_column.best_edge
-        return next_best_edge
+        if len(self.graph.columns) > current_best_edge_head.column_index + 1:
+            best_column = self.graph.columns[current_best_edge_head.column_index
+                                             + 1]
+            best_vertice_in_column = best_column.get_vertice_by_label(
+                current_best_edge_head.label)
+            next_best_edge = best_vertice_in_column.best_edge
+            return next_best_edge
 
     def answer(self):
         columns = self.graph.columns
@@ -59,24 +61,28 @@ class Recognizer:
                 edges_head_vertices_sum = {}  # {edge.head.label: sum}
 
                 if len(vertice.edges) != 0:
+                    print("{} {}: ".format(column_index - 1, vertice.label))
+
                     for edge in vertice.edges:
                         edge_head_column = columns[edge.head.column_index]
                         edge_head_vertice_weight = edge_head_column.get_vertice_by_label(
                             edge.head.label).weight
 
-                        print("column_index {}".format(column_index - 1))
-                        print('vertice {}'.format(vertice.label))
-                        print('edge_head_column {}'.format(
-                            edge_head_column.index))
-                        print('edge.head.label {}'.format(edge.head.label))
-                        print('edge_head_vertice_weight {}'.format(
-                            edge_head_vertice_weight))
+                        print("{} {} ----{}----> {} {} {}".format(
+                            edge.tail.column_index, edge.tail.label,
+                            edge.weight, edge_head_column.index,
+                            edge.head.label, edge_head_vertice_weight))
+                        # print('edge_head_column {}'.format(
+                        #     edge_head_column.index))
+                        # print('edge.head.label {}'.format(edge.head.label))
+                        # print('edge_head_vertice_weight {}'.format(
+                        #     edge_head_vertice_weight))
 
                         edge_head_vertice_sum = edge_head_vertice_weight + edge.weight
                         edges_head_vertices_sum[
                             edge.head.label] = edge_head_vertice_sum
 
-                        print(edges_head_vertices_sum)
+                    print(edges_head_vertices_sum)
 
                     min_head_vertice_label = min(
                         edges_head_vertices_sum,
@@ -84,11 +90,24 @@ class Recognizer:
                     min_head_vertice_sum = edges_head_vertices_sum[
                         min_head_vertice_label]
 
-                    #print(min_head_vertice_label)
                     vertice.weight += min_head_vertice_sum
                     vertice.best_edge = vertice.get_edge_by_head_label(
                         min_head_vertice_label)
 
+                    best_edge_head_column = columns[
+                        vertice.best_edge.head.column_index]
+                    best_edge_head_vertice_weight = edge_head_column.get_vertice_by_label(
+                        vertice.best_edge.head.label).weight
+
+                    print("best_edge: {} {} ----{}----> {} {} {}".format(
+                        vertice.best_edge.tail.column_index,
+                        vertice.best_edge.tail.label, vertice.best_edge.weight,
+                        best_edge_head_column.index,
+                        vertice.best_edge.head.label,
+                        best_edge_head_vertice_weight))
+
+                    print("\n\n --------- \n\n")
+                    print("\n\n --------- \n\n")
                 #vertice += min[edge+vertice[edge.head.label]]
 
     def update_edges(self):
@@ -123,15 +142,21 @@ class Recognizer:
                 # print(sum)
 
                 # print(
-                #     cv2.ad.sum(
-                #         cv2.subtract(
-                #             self.noised_image[pixel, image_start_column_index +
-                #                               column],
-                #             reference_char[pixel, column])))
+                #     cv2.absdiff(
+                #         self.noised_image[pixel, image_start_column_index +
+                #                           column],
+                #         reference_char[pixel, column]))
+
                 sum += (np.sum(
-                    cv2.subtract(
+                    cv2.absdiff(
                         self.noised_image[pixel, image_start_column_index +
-                                          column],
-                        reference_char[pixel, column])))**2
+                                          column - 1],
+                        reference_char[pixel, column - 1])))**2
+
+                # sum += (np.sum(
+                #     cv2.subtract(
+                #         self.noised_image[pixel, image_start_column_index +
+                #                           column - 1],
+                #         reference_char[pixel, column - 1])))**2
 
         return sum
