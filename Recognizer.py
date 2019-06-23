@@ -108,7 +108,6 @@ class Recognizer:
 
                     print("\n\n --------- \n\n")
                     print("\n\n --------- \n\n")
-                #vertice += min[edge+vertice[edge.head.label]]
 
     def update_edges(self):
         for column in self.graph.columns:
@@ -122,10 +121,6 @@ class Recognizer:
 
     def sum_of_squared_differences(self, reference_char,
                                    image_start_column_index):
-        """
-        """
-        # row, col
-
         char_width = reference_char.shape[1]
         #print(char_width)
 
@@ -141,22 +136,10 @@ class Recognizer:
                 # print("im_column: {}".format(im_col))
                 # print(sum)
 
-                # print(
-                #     cv2.absdiff(
-                #         self.noised_image[pixel, image_start_column_index +
-                #                           column],
-                #         reference_char[pixel, column]))
-
                 sum += (np.sum(
                     cv2.absdiff(
                         self.noised_image[pixel, image_start_column_index +
                                           column - 1],
                         reference_char[pixel, column - 1])))**2
-
-                # sum += (np.sum(
-                #     cv2.subtract(
-                #         self.noised_image[pixel, image_start_column_index +
-                #                           column - 1],
-                #         reference_char[pixel, column - 1])))**2
 
         return sum

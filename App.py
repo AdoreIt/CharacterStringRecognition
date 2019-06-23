@@ -2,12 +2,11 @@ from VizGen import *
 from Recognizer import Recognizer
 
 if __name__ == "__main__":
-    alphabet = ['B', 'A', 'D', 'C']  # 'L', 'C']
+    alphabet = ['B', 'A', 'D', 'C']
 
     generated_string, characters_dict, original_image = generate_image(
         alphabet, 8)
-    noised_image = noise_image(original_image, sigma=600)
-    #show_image(noised_image)
+    noised_image = noise_image(original_image, sigma=100)
 
     recognizer = Recognizer(original_image, noised_image, alphabet,
                             characters_dict)
@@ -20,5 +19,3 @@ if __name__ == "__main__":
 
     show_triple_images(original_image, noised_image, recognized_image,
                        "original image", "noised image", "recognized image")
-
-    # show_image(noise_image(image, 0, 20), "noised image")

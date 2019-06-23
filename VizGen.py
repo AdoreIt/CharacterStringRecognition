@@ -17,7 +17,6 @@ def draw_characters(alphabet):
 
     for character in alphabet:
         if character not in character_imgs:
-            #print(character)
             size = cv2.getTextSize(character, font, font_scale, thickness)
 
             text_width = size[0][0]
@@ -25,8 +24,6 @@ def draw_characters(alphabet):
 
             char_img = np.zeros((text_height, text_width, 3), np.uint8)
             char_img.fill(255)
-
-            #print("shape {0}:{1}".format(char_img.shape[1], char_img.shape[0]))
 
             textY = text_height
             textX = 0
@@ -36,7 +33,6 @@ def draw_characters(alphabet):
 
             crop_img = char_img[0:text_height, 2:text_width - 3]
 
-            #show_image(char_img)
             character_imgs[character] = crop_img
 
     return character_imgs
@@ -49,10 +45,6 @@ def get_characters_width_dict(characters_dict):
         characters_width_dict[character] = characters_dict[character].shape[1]
 
     return characters_width_dict
-
-
-def get_character_width(character_image):
-    return character_image.shape[1]
 
 
 def concatenate_images(characters_string, images_dict):
@@ -113,17 +105,17 @@ def show_triple_images(image_left,
     fig.add_subplot(1, 2, 1)
     plt.title(im_left_title)
     plt.imshow(cv2.cvtColor(image_left, cv2.COLOR_BGR2RGB))
-    #plt.axis("off")
+    plt.axis("off")
 
     fig.add_subplot(1, 2, 2)
     plt.title(im_right_title)
     plt.imshow(cv2.cvtColor(image_right, cv2.COLOR_BGR2RGB))
-    #plt.axis("off")
+    plt.axis("off")
 
     fig.add_subplot(4, 1, 4)
     plt.title(im_low_title)
     plt.imshow(cv2.cvtColor(image_low, cv2.COLOR_BGR2RGB))
-    #plt.axis("off")
+    plt.axis("off")
 
     plt.show()
 
